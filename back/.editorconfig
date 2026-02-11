@@ -1,0 +1,19 @@
+# editorconfig를 통해 intelliJ IDEA와 KtLint의 코딩 스타일을 적용합니다
+# editorconfig 활용 - https://editorconfig.org/#file-location
+# ide & ktlint 활용 - https://pinterest.github.io/ktlint/latest/rules/code-styles/
+
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 4
+
+[{*.kt,*.kts}]
+# ============ IntelliJ IDEA ============
+#  Disable wildcard imports entirely
+ij_kotlin_name_count_to_use_star_import = 2147483647
+ij_kotlin_name_count_to_use_star_import_for_members = 2147483647
+ij_kotlin_packages_to_use_import_on_demand = unset
+
+# ============ KtLint ============
+ktlint_code_style = ktlint_official
