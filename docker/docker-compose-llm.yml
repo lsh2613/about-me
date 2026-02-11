@@ -1,0 +1,20 @@
+name: aboutme
+
+services:
+  ollama:
+    image: ollama/ollama
+    container_name: aboutme-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ./llm/volume:/root/.ollama
+    restart: unless-stopped
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        ollama serve &
+        sleep 5
+        ollama pull gemma:2b-instruct
+        ollama pull nomic-embed-text
+        tail -f /dev/null
