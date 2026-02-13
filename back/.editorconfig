@@ -6,9 +6,9 @@
 charset = utf-8
 end_of_line = lf
 indent_style = space
-indent_size = 4
 
 [{*.kt,*.kts}]
+indent_size = 4
 # ============ IntelliJ IDEA ============
 #  Disable wildcard imports entirely
 ij_kotlin_name_count_to_use_star_import = 2147483647

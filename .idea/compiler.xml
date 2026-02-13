@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="back.main" target="21" />
+      <module name="back.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
       <module name="back" options="-parameters" />
       <module name="back.main" options="-parameters" />
       <module name="back.test" options="-parameters" />
+      <module name="com.back.main" options="-parameters" />
+      <module name="com.back.test" options="-parameters" />
     </option>
   </component>
 </project>
