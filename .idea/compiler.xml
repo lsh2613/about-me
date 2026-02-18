@@ -1,10 +1,37 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="back.aboutme-infra" target="21" />
+      <module name="back.aboutme-infra.main" target="21" />
+      <module name="back.aboutme-infra.test" target="21" />
+      <module name="back.main" target="21" />
+      <module name="back.test" target="21" />
+      <module name="com.back.main" target="21" />
+      <module name="com.back.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="about-me.back.main" options="-parameters" />
+      <module name="about-me.back.test" options="-parameters" />
       <module name="back" options="-parameters" />
+      <module name="back.aboutme-ai" options="-parameters" />
+      <module name="back.aboutme-ai.main" options="-parameters" />
+      <module name="back.aboutme-ai.test" options="-parameters" />
+      <module name="back.aboutme-common" options="-parameters" />
+      <module name="back.aboutme-common.main" options="-parameters" />
+      <module name="back.aboutme-common.test" options="-parameters" />
+      <module name="back.aboutme-domain" options="-parameters" />
+      <module name="back.aboutme-domain.main" options="-parameters" />
+      <module name="back.aboutme-domain.test" options="-parameters" />
+      <module name="back.aboutme-external-api" options="-parameters" />
+      <module name="back.aboutme-external-api.main" options="-parameters" />
+      <module name="back.aboutme-external-api.test" options="-parameters" />
       <module name="back.main" options="-parameters" />
       <module name="back.test" options="-parameters" />
+      <module name="com.back.main" options="-parameters" />
+      <module name="com.back.test" options="-parameters" />
     </option>
   </component>
 </project>

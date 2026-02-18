@@ -5,10 +5,14 @@
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/back" />
-        <option name="gradleJvm" value="#JAVA_HOME" />
+        <option name="gradleJvm" value="corretto-21" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/back" />
+            <option value="$PROJECT_DIR$/back/aboutme-ai" />
+            <option value="$PROJECT_DIR$/back/aboutme-common" />
+            <option value="$PROJECT_DIR$/back/aboutme-domain" />
+            <option value="$PROJECT_DIR$/back/aboutme-external-api" />
           </set>
         </option>
       </GradleProjectSettings>
