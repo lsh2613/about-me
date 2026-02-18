@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
-# 스테이징된 /back 하위 .kt 파일만 추출, 반환된 파일이 없으면 정상 종료
-stagedKtFiles=$(git diff --staged --name-only | grep '^back/.*\.kt$' || true)
+# 삭제된 파일을 제외하고 스테이징된 /back 하위 .kt 파일 추출, 반환된 파일이 없으면 정상 종료
+stagedKtFiles=$(git diff --staged --name-only --diff-filter=d | grep '^back/.*\.kt$' || true)
 
 if [ -n "$stagedKtFiles" ]; then
   echo "==================== ktlintFormat::start ========================"
