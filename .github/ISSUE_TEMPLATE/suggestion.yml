@@ -1,0 +1,11 @@
+name: "🙋 Meeting"
+description: '팀원들과 논의할 내용이 있나요?'
+labels: "🙋 Meeting"
+body:
+  - type: textarea
+    attributes:
+      label: 💬 Description
+      description: 회의 주제에 대한 설명을 작성해주세요!
+      placeholder: 자세히 적을수록 좋습니다!
+    validations:
+      required: true
