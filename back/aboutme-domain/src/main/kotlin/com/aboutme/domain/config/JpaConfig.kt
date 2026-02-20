@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories
 
 @EnableJpaAuditing
-@EnableJpaRepositories(basePackages = ["com.aboutme.domain"])
-@EntityScan(basePackages = ["com.aboutme.domain"])
+@EnableJpaRepositories(basePackages = ["com.aboutme.domain.persistence"])
+@EntityScan(basePackages = ["com.aboutme.domain.persistence"])
 @Configuration
 class JpaConfig
