@@ -1,4 +1,4 @@
-package com.aboutme.externalapi.advice
+package com.aboutme.externalapi.common.advice
 
 import com.aboutme.common.exception.payload.CausedBy
 import com.aboutme.common.exception.payload.ErrorResponse
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import org.springframework.web.method.annotation.HandlerMethodValidationException
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException
+import java.lang.IllegalArgumentException
 
 @RestControllerAdvice
 class ClientExceptionAdvice {
@@ -157,8 +158,8 @@ class ClientExceptionAdvice {
      * IllegalArgumentException이 발생한 경우
      */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(java.lang.IllegalArgumentException::class)
-    fun handleIllegalArgumentException(e: java.lang.IllegalArgumentException): ErrorResponse {
+    @ExceptionHandler(IllegalArgumentException::class)
+    fun handleIllegalArgumentException(e: IllegalArgumentException): ErrorResponse {
         log.info("handleIllegalArgumentException : {}", e.message)
         val causedBy = CausedBy(StatusCode.BAD_REQUEST, ReasonCode.INVALID_REQUEST)
         return ErrorResponse.of(causedBy, e.message!!)

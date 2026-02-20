@@ -1,7 +1,7 @@
 package com.aboutme.externalapi.config
 
-import com.aboutme.externalapi.handler.BasicAccessDeniedHandler
-import com.aboutme.externalapi.handler.BasicAuthenticationEntryPoint
+import com.aboutme.externalapi.common.handler.BasicAccessDeniedHandler
+import com.aboutme.externalapi.common.handler.BasicAuthenticationEntryPoint
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

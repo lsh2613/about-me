@@ -1,4 +1,4 @@
-package com.aboutme.externalapi.handler
+package com.aboutme.externalapi.common.handler
 
 import com.aboutme.common.exception.payload.ErrorResponse
 import com.aboutme.common.extension.logger
