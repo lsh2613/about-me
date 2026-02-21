@@ -1,4 +1,4 @@
-package com.aboutme.externalapi.advice
+package com.aboutme.externalapi.common.advice
 
 import com.aboutme.common.exception.GlobalException
 import com.aboutme.common.exception.payload.ErrorResponse
