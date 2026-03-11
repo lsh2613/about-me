@@ -1,5 +1,7 @@
 rootProject.name = "back"
+
+include("aboutme-bootstrap")
 include("aboutme-common")
-include("aboutme-domain")
-include("aboutme-external-api")
-include("aboutme-ai")
+include("aboutme-adapter")
+include("aboutme-app")
+include("aboutme-core")

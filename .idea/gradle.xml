@@ -9,10 +9,11 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/back" />
-            <option value="$PROJECT_DIR$/back/aboutme-ai" />
+            <option value="$PROJECT_DIR$/back/aboutme-adapter" />
+            <option value="$PROJECT_DIR$/back/aboutme-app" />
+            <option value="$PROJECT_DIR$/back/aboutme-bootstrap" />
             <option value="$PROJECT_DIR$/back/aboutme-common" />
-            <option value="$PROJECT_DIR$/back/aboutme-domain" />
-            <option value="$PROJECT_DIR$/back/aboutme-external-api" />
+            <option value="$PROJECT_DIR$/back/aboutme-core" />
           </set>
         </option>
       </GradleProjectSettings>
