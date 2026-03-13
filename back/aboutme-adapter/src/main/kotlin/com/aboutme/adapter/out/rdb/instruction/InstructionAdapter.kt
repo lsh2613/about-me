@@ -45,6 +45,20 @@ class InstructionAdapter(
         }
     }
 
+    @Transactional
+    override fun updateProfile(path: String) {
+        findEntityByIdOrThrow().apply {
+            updateProfile(path)
+        }
+    }
+
+    @Transactional
+    override fun deleteProfile() {
+        findEntityByIdOrThrow().apply {
+            updateProfile()
+        }
+    }
+
     private fun findEntityByIdOrThrow(): InstructionEntity =
         instructionJpaRepository.findById(InstructionEntity.SINGLETON_ID)
             .orElseThrow { throw GlobalException(InstructionErrorCode.NOT_FOUND) }

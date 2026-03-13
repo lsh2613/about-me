@@ -38,6 +38,10 @@ class InstructionEntity(
         this.skills = skills
     }
 
+    fun updateProfile(profileImageUrl: String? = null) {
+        this.profileImageUrl = profileImageUrl
+    }
+
     @Id
     val id: Long = SINGLETON_ID
 

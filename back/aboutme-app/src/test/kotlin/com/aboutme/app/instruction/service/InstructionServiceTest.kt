@@ -1,6 +1,7 @@
 package com.aboutme.app.instruction.service
 
 import com.aboutme.app.common.util.InstructionMocker
+import com.aboutme.app.file.service.helper.FileNamer
 import com.aboutme.app.instruction.port.out.InstructionCommandPort
 import com.aboutme.app.instruction.port.out.InstructionQueryPort
 import com.aboutme.app.instruction.service.dto.command.InstructionCommand
@@ -15,11 +16,13 @@ import org.junit.jupiter.api.extension.ExtendWith
 class InstructionServiceTest : DescribeSpec({
     val instructionQueryPort = mockk<InstructionQueryPort>(relaxed = true)
     val instructionCommandPort = mockk<InstructionCommandPort>(relaxed = true)
+    val fileNamer = mockk<FileNamer>(relaxed = true)
 
     val instructionService =
         InstructionService(
             instructionQueryPort = instructionQueryPort,
             instructionCommandPort = instructionCommandPort,
+            fileNamer = fileNamer,
         )
 
     describe("자기소개 생성/수정") {
