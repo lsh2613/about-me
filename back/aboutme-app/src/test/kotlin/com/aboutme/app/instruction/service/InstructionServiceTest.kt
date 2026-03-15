@@ -13,8 +13,10 @@ import com.aboutme.core.instruction.error.InstructionErrorCode
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.shouldBe
+import io.mockk.Runs
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
+import io.mockk.just
 import io.mockk.mockk
 import io.mockk.mockkObject
 import io.mockk.verify
@@ -112,7 +114,6 @@ class InstructionServiceTest : DescribeSpec({
 
     describe("자기소개 프로필 이미지 대체") {
         context("이미지 파일인 경우") {
-            mockkObject(FileManager)
             val dirPath =
                 Path.of("test-upload/profile").also {
                     every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns it
@@ -134,6 +135,9 @@ class InstructionServiceTest : DescribeSpec({
                 Path.of("http://localhost:8080/test-upload/profile").toUri().also {
                     every { fileNamer.toUri(filePath) } returns it
                 }
+            mockkObject(FileManager)
+            every { FileManager.deleteIfExists(dirPath) } just Runs
+            every { FileManager.upload(img, filePath) } just Runs
 
             val result = instructionService.replaceProfileImage(img)
             it("프로필 이미지 대체 로직을 호출한다") {
@@ -157,9 +161,10 @@ class InstructionServiceTest : DescribeSpec({
     }
 
     describe("자기소개 프로필 이미지 삭제") {
-        mockkObject(FileManager)
         val filePath = Path.of("test-upload/profile")
         every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns filePath
+        mockkObject(FileManager)
+        every { FileManager.deleteIfExists(filePath) } just Runs
         context("프로필 이미지를 삭제하면") {
             instructionService.deleteProfileImage()
             it("프로필 이미지 경로 삭제 로직을 호출한다") {
