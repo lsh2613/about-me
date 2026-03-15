@@ -2,3 +2,5 @@
 node_modules
 docker/**/volume
 **/**.env
+
+upload
