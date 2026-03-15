@@ -18,10 +18,6 @@ class InstructionEntity(
     education: String,
     skills: List<String>,
 ) : DateAuditable() {
-    companion object {
-        const val SINGLETON_ID = 0L
-    }
-
     fun update(
         name: String,
         emails: List<String>,
@@ -38,8 +34,12 @@ class InstructionEntity(
         this.skills = skills
     }
 
+    fun updateProfile(profileImageUrl: String? = null) {
+        this.profileImageUrl = profileImageUrl
+    }
+
     @Id
-    val id: Long = SINGLETON_ID
+    val id: Long = 0L
 
     var profileImageUrl: String? = profileImageUrl
         protected set

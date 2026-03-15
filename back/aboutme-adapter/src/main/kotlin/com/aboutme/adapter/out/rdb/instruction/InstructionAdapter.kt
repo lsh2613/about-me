@@ -15,6 +15,10 @@ import org.springframework.transaction.annotation.Transactional
 class InstructionAdapter(
     private val instructionJpaRepository: InstructionJpaRepository,
 ) : InstructionCommandPort, InstructionQueryPort {
+    companion object {
+        const val SINGLETON_ID = 0L
+    }
+
     @Transactional
     override fun save(instruction: Instruction) {
         instructionJpaRepository.save(InstructionMapper.toEntity(instruction))
@@ -22,7 +26,7 @@ class InstructionAdapter(
 
     @Transactional(readOnly = true)
     override fun findOrNull(): Instruction? {
-        return instructionJpaRepository.findById(InstructionEntity.SINGLETON_ID).orElse(null)
+        return instructionJpaRepository.findById(SINGLETON_ID).orElse(null)
             ?.let(InstructionMapper::toDomain)
     }
 
@@ -45,7 +49,21 @@ class InstructionAdapter(
         }
     }
 
+    @Transactional
+    override fun updateProfile(path: String) {
+        findEntityByIdOrThrow().apply {
+            updateProfile(path)
+        }
+    }
+
+    @Transactional
+    override fun deleteProfile() {
+        findEntityByIdOrThrow().apply {
+            updateProfile()
+        }
+    }
+
     private fun findEntityByIdOrThrow(): InstructionEntity =
-        instructionJpaRepository.findById(InstructionEntity.SINGLETON_ID)
+        instructionJpaRepository.findById(SINGLETON_ID)
             .orElseThrow { throw GlobalException(InstructionErrorCode.NOT_FOUND) }
 }
