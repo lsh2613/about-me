@@ -5,10 +5,12 @@ import com.aboutme.adapter.`in`.http.instruction.req.InstructionReq
 import com.aboutme.app.file.service.dto.rep.FileUploadRep
 import com.aboutme.app.instruction.port.`in`.InstructionUseCase
 import com.aboutme.app.instruction.service.dto.rep.InstructionDetailRep
+import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
@@ -23,8 +25,10 @@ class InstructionController(
         instructionUseCase.createOrUpdate(req.toCommand())
     }
 
-    @PostMapping("/instructions/profile-images")
-    override fun replaceProfileImage(img: MultipartFile): FileUploadRep {
+    @PostMapping(value = ["/instructions/profile-images"], consumes = [MediaType.MULTIPART_FORM_DATA_VALUE])
+    override fun replaceProfileImage(
+        @RequestPart img: MultipartFile,
+    ): FileUploadRep {
         return instructionUseCase.replaceProfileImage(img)
     }
 
