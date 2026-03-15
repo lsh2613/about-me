@@ -6,4 +6,8 @@ interface InstructionCommandPort {
     fun save(instruction: Instruction)
 
     fun update(instruction: Instruction)
+
+    fun updateProfile(path: String)
+
+    fun deleteProfile()
 }
