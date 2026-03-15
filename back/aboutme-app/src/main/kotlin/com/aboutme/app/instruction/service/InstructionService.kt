@@ -10,6 +10,7 @@ import com.aboutme.app.instruction.service.dto.command.InstructionCommand
 import com.aboutme.app.instruction.service.dto.rep.InstructionDetailRep
 import com.aboutme.common.extension.logger
 import com.aboutme.core.file.domain.FileUploadType
+import com.aboutme.core.instruction.domain.Instruction
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -26,17 +27,23 @@ class InstructionService(
     @Transactional
     override fun createOrUpdate(command: InstructionCommand) {
         instructionQueryPort.findOrNull()?.apply {
-            update(
-                name = command.name,
-                emails = command.emails,
-                region = command.region,
-                education = command.education,
-                skills = command.skills,
-            )
-            instructionCommandPort.update(this)
-        } ?: let {
-            instructionCommandPort.save(command.toDomain())
-        }
+            update(command)
+        } ?: save(command)
+    }
+
+    private fun Instruction.update(command: InstructionCommand) {
+        update(
+            name = command.name,
+            emails = command.emails,
+            region = command.region,
+            education = command.education,
+            skills = command.skills,
+        )
+        instructionCommandPort.update(this)
+    }
+
+    private fun save(command: InstructionCommand) {
+        instructionCommandPort.save(command.toDomain())
     }
 
     @Transactional(readOnly = true)
