@@ -161,15 +161,15 @@ class InstructionServiceTest : DescribeSpec({
     }
 
     describe("자기소개 프로필 이미지 삭제") {
-        val filePath = Path.of("test-upload/profile")
-        every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns filePath
+        val dirPath = Path.of("test-upload/profile")
+        every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns dirPath
         mockkObject(FileManager)
-        every { FileManager.deleteIfExists(filePath) } just Runs
+        every { FileManager.deleteIfExists(dirPath) } just Runs
         context("프로필 이미지를 삭제하면") {
             instructionService.deleteProfileImage()
             it("프로필 이미지 경로 삭제 로직을 호출한다") {
                 verify { instructionCommandPort.deleteProfile() }
-                verify { FileManager.deleteIfExists(filePath) }
+                verify { FileManager.deleteIfExists(dirPath) }
             }
         }
     }
