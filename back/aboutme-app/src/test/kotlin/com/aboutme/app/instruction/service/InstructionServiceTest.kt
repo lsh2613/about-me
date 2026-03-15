@@ -1,11 +1,14 @@
 package com.aboutme.app.instruction.service
 
 import com.aboutme.app.common.util.InstructionMocker
+import com.aboutme.app.file.service.helper.FileNamer
+import com.aboutme.app.file.service.util.FileManager
 import com.aboutme.app.instruction.port.out.InstructionCommandPort
 import com.aboutme.app.instruction.port.out.InstructionQueryPort
 import com.aboutme.app.instruction.service.dto.command.InstructionCommand
 import com.aboutme.app.instruction.service.dto.rep.InstructionDetailRep
 import com.aboutme.common.exception.GlobalException
+import com.aboutme.core.file.domain.FileUploadType
 import com.aboutme.core.instruction.error.InstructionErrorCode
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
@@ -13,18 +16,23 @@ import io.kotest.matchers.shouldBe
 import io.mockk.every
 import io.mockk.junit5.MockKExtension
 import io.mockk.mockk
+import io.mockk.mockkObject
 import io.mockk.verify
 import org.junit.jupiter.api.extension.ExtendWith
+import org.springframework.web.multipart.MultipartFile
+import java.nio.file.Path
 
 @ExtendWith(MockKExtension::class)
 class InstructionServiceTest : DescribeSpec({
     val instructionQueryPort = mockk<InstructionQueryPort>(relaxed = true)
     val instructionCommandPort = mockk<InstructionCommandPort>(relaxed = true)
+    val fileNamer = mockk<FileNamer>(relaxed = true)
 
     val instructionService =
         InstructionService(
             instructionQueryPort = instructionQueryPort,
             instructionCommandPort = instructionCommandPort,
+            fileNamer = fileNamer,
         )
 
     val instruction = InstructionMocker.createMock1()
@@ -98,6 +106,65 @@ class InstructionServiceTest : DescribeSpec({
                 val e = shouldThrow<GlobalException> { instructionService.readDetail() }
                 verify { instructionQueryPort.findOrThrow() }
                 e.errorCode shouldBe InstructionErrorCode.NOT_FOUND
+            }
+        }
+    }
+
+    describe("자기소개 프로필 이미지 대체") {
+        context("이미지 파일인 경우") {
+            mockkObject(FileManager)
+            val dirPath =
+                Path.of("test-upload/profile").also {
+                    every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns it
+                }
+            val img =
+                mockk<MultipartFile>(relaxed = true).also {
+                    every { it.contentType } returns "image/png"
+                }
+            val filePath =
+                dirPath.resolve("test-image.png").also {
+                    every {
+                        fileNamer.createUploadFilePath(
+                            type = FileUploadType.PROFILE,
+                            file = img,
+                        )
+                    } returns it
+                }
+            val uri =
+                Path.of("http://localhost:8080/test-upload/profile").toUri().also {
+                    every { fileNamer.toUri(filePath) } returns it
+                }
+
+            val result = instructionService.replaceProfileImage(img)
+            it("프로필 이미지 대체 로직을 호출한다") {
+                verify { fileNamer.createUploadDirPath(FileUploadType.PROFILE) }
+                verify { FileManager.deleteIfExists(dirPath) }
+                verify { FileManager.upload(img, filePath) }
+                verify { instructionCommandPort.updateProfile(filePath.toString()) }
+                result.uri shouldBe uri.toString()
+            }
+        }
+
+        context("이미지 파일이 아닌 경우") {
+            val img = mockk<MultipartFile>(relaxed = true)
+            every { img.contentType } returns "application/pdf"
+
+            it("예외가 발생한다") {
+                val e = shouldThrow<IllegalArgumentException> { instructionService.replaceProfileImage(img) }
+                e.message shouldBe "지원하는 파일 형식이 아닙니다."
+            }
+        }
+    }
+
+    describe("자기소개 프로필 이미지 삭제") {
+        mockkObject(FileManager)
+        val filePath = Path.of("test-upload/profile")
+        every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns filePath
+        context("프로필 이미지를 삭제하면") {
+            instructionService.deleteProfileImage()
+            it("프로필 이미지 경로 삭제 로직을 호출한다") {
+                verify { instructionCommandPort.deleteProfile() }
+                verify { FileManager.deleteIfExists(filePath) }
             }
         }
     }
