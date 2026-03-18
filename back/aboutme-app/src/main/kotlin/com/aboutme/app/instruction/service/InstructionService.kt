@@ -57,17 +57,31 @@ class InstructionService(
         val profileType = FileUploadType.PROFILE
         require(profileType.isValidMimeType(img.contentType!!)) { "지원하는 파일 형식이 아닙니다." }
 
-        deleteProfileImage(profileType)
-        val filePath = uploadProfileImage(profileType, img)
+        val oldProfileImagePath = instructionQueryPort.findOrThrow().profileImageUrl
+        val newProfileImagePath =
+            replaceImage(
+                profileType,
+                img,
+                oldProfileImagePath,
+            )
 
-        val uri = fileNamer.toUri(filePath)
+        val uri = fileNamer.toUri(newProfileImagePath)
         return FileUploadRep(uri.toString())
     }
 
-    private fun deleteProfileImage(profileType: FileUploadType) {
-        fileNamer.createUploadDirPath(profileType).also {
-            log.info("Deleting existing profile image at path: $it")
-            FileManager.deleteIfExists(it)
+    private fun replaceImage(
+        profileType: FileUploadType,
+        img: MultipartFile,
+        oldProfileImagePath: String?,
+    ): Path {
+        val newProfileImagePath = uploadProfileImage(profileType, img)
+        deleteProfileImage(oldProfileImagePath)
+        return newProfileImagePath
+    }
+
+    private fun deleteProfileImage(oldProfileImageUrl: String?) {
+        oldProfileImageUrl?.let {
+            FileManager.deleteIfExists(Path.of(it))
         }
     }
 
