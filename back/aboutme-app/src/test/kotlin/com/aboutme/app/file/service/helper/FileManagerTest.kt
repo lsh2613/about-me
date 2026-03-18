@@ -22,9 +22,10 @@ class FileManagerTest : DescribeSpec({
 
     afterEach {
         if (basePath.exists()) {
-            Files.walk(basePath)
-                .sorted(Comparator.reverseOrder())
-                .forEach(Files::deleteIfExists)
+            Files.walk(basePath).use { paths ->
+                paths.sorted(Comparator.reverseOrder())
+                    .forEach(Files::deleteIfExists)
+            }
             log.info("Deleted test base directory: {}", basePath)
         }
     }
