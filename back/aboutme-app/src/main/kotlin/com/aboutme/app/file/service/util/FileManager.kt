@@ -22,6 +22,7 @@ class FileManager {
                 log.info("File uploaded to: {}", filePath)
             }.onFailure { e ->
                 log.error("Failed to upload file: {}", filePath, e)
+                throw e
             }
         }
 
@@ -32,6 +33,7 @@ class FileManager {
 
             if (!file.exists() && !file.mkdirs()) {
                 log.error("Failed to create file: {}", dirName)
+                throw RuntimeException("디렉토리 생성에 실패했습니다: $dirName")
             }
 
             log.info("Directory created to: {}", dirName)
