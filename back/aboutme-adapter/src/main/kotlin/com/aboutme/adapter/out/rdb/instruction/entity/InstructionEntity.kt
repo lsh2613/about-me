@@ -11,7 +11,7 @@ import jakarta.persistence.Table
 @Table(name = "instruction")
 @Entity
 class InstructionEntity(
-    profileImageUrl: String? = null,
+    profileImagePath: String? = null,
     name: String,
     emails: List<String>,
     region: String,
@@ -24,24 +24,24 @@ class InstructionEntity(
         region: String,
         education: String,
         skills: List<String>,
-        profileImageUrl: String?,
+        profileImagePath: String?,
     ) {
         this.name = name
         this.emails = emails
-        this.profileImageUrl = profileImageUrl
+        this.profileImagePath = profileImagePath
         this.region = region
         this.education = education
         this.skills = skills
     }
 
-    fun updateProfile(profileImageUrl: String? = null) {
-        this.profileImageUrl = profileImageUrl
+    fun updateProfile(profileImagePath: String? = null) {
+        this.profileImagePath = profileImagePath
     }
 
     @Id
     val id: Long = 0L
 
-    var profileImageUrl: String? = profileImageUrl
+    var profileImagePath: String? = profileImagePath
         protected set
     var name: String = name
         protected set

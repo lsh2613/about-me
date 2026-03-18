@@ -21,7 +21,7 @@ class InstructionMocker {
                 property(Instruction::region) { "강남" }
                 property(Instruction::education) { "컴퓨터공학과" }
                 property(Instruction::skills) { listOf("Kotlin", "Spring Boot") }
-                property(Instruction::profileImageUrl) { "https://example.com/profile1.jpg" }
+                property(Instruction::profileImagePath) { "https://example.com/profile1.jpg" }
             }
         }
 
@@ -39,7 +39,7 @@ class InstructionMocker {
                 property(Instruction::region) { "수원" }
                 property(Instruction::education) { "전자공학과" }
                 property(Instruction::skills) { listOf("Type Script", "React") }
-                property(Instruction::profileImageUrl) { "https://example.com/profile2.jpg" }
+                property(Instruction::profileImagePath) { "https://example.com/profile2.jpg" }
             }
         }
     }

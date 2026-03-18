@@ -13,7 +13,7 @@ class InstructionMapper {
                 region = entity.region,
                 education = entity.education,
                 skills = entity.skills,
-                profileImageUrl = entity.profileImageUrl,
+                profileImagePath = entity.profileImagePath,
             )
 
         fun toEntity(instruction: Instruction): InstructionEntity =
@@ -23,7 +23,7 @@ class InstructionMapper {
                 region = instruction.region,
                 education = instruction.education,
                 skills = instruction.skills,
-                profileImageUrl = instruction.profileImageUrl,
+                profileImagePath = instruction.profileImagePath,
             )
     }
 }

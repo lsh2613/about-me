@@ -56,7 +56,7 @@ class InstructionService(
     override fun replaceProfileImage(img: MultipartFile): FileUploadRep {
         require(FileUploadType.PROFILE.isValidMimeType(img.contentType!!)) { "지원하는 파일 형식이 아닙니다." }
 
-        val oldProfileImagePath = instructionQueryPort.findOrThrow().profileImageUrl
+        val oldProfileImagePath = instructionQueryPort.findOrThrow().profileImagePath
         val newProfileImagePath =
             replaceImage(
                 FileUploadType.PROFILE,

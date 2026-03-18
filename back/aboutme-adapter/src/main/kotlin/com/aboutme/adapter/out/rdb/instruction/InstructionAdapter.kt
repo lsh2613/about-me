@@ -44,7 +44,7 @@ class InstructionAdapter(
                 region = instruction.region,
                 education = instruction.education,
                 skills = instruction.skills,
-                profileImageUrl = instruction.profileImageUrl,
+                profileImagePath = instruction.profileImagePath,
             )
         }
     }

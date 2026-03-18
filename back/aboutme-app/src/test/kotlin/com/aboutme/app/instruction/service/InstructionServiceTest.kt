@@ -96,7 +96,7 @@ class InstructionServiceTest : DescribeSpec({
                         region = instruction.region,
                         education = instruction.education,
                         skills = instruction.skills,
-                        profileImageUrl = instruction.profileImageUrl,
+                        profileImageUrl = instruction.profileImagePath,
                     )
             }
         }
@@ -136,7 +136,7 @@ class InstructionServiceTest : DescribeSpec({
 
             val result = instructionService.replaceProfileImage(img)
             it("프로필 이미지 대체 로직을 호출한다") {
-                verify { FileManager.deleteIfExists(Path.of(instruction.profileImageUrl!!)) }
+                verify { FileManager.deleteIfExists(Path.of(instruction.profileImagePath!!)) }
                 verify { FileManager.upload(img, filePath) }
                 verify { instructionCommandPort.updateProfile(filePath.toString()) }
                 result.uri shouldBe uri.toString()
@@ -150,7 +150,7 @@ class InstructionServiceTest : DescribeSpec({
                 val e = shouldThrow<RuntimeException> { instructionService.replaceProfileImage(img) }
                 e.message shouldBe "업로드 실패"
                 verify(exactly = 0) { instructionCommandPort.updateProfile(filePath.toString()) }
-                verify(exactly = 0) { FileManager.deleteIfExists(Path.of(instruction.profileImageUrl!!)) }
+                verify(exactly = 0) { FileManager.deleteIfExists(Path.of(instruction.profileImagePath!!)) }
             }
         }
 

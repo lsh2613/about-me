@@ -9,7 +9,7 @@ data class Instruction(
     var region: String,
     var education: String,
     var skills: List<String>,
-    var profileImageUrl: String? = null,
+    var profileImagePath: String? = null,
 ) : Domain() {
     fun update(
         name: String,
