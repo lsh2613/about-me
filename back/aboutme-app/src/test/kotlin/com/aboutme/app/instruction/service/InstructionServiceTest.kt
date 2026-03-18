@@ -113,44 +113,48 @@ class InstructionServiceTest : DescribeSpec({
     }
 
     describe("자기소개 프로필 이미지 대체") {
+        val img = mockk<MultipartFile>(relaxed = true)
+        val filePath =
+            Path.of("test-upload/profile/test-image.png").also {
+                every {
+                    fileNamer.createUploadFilePath(
+                        type = FileUploadType.PROFILE,
+                        file = img,
+                    )
+                } returns it
+            }
+
+        every { instructionQueryPort.findOrThrow() } returns instruction
+        mockkObject(FileManager)
+
         context("이미지 파일인 경우") {
-            val dirPath =
-                Path.of("test-upload/profile").also {
-                    every { fileNamer.createUploadDirPath(FileUploadType.PROFILE) } returns it
-                }
-            val img =
-                mockk<MultipartFile>(relaxed = true).also {
-                    every { it.contentType } returns "image/png"
-                }
-            val filePath =
-                dirPath.resolve("test-image.png").also {
-                    every {
-                        fileNamer.createUploadFilePath(
-                            type = FileUploadType.PROFILE,
-                            file = img,
-                        )
-                    } returns it
-                }
+            every { img.contentType } returns "image/png"
             val uri =
                 Path.of("http://localhost:8080/test-upload/profile").toUri().also {
                     every { fileNamer.toUri(filePath) } returns it
                 }
-            mockkObject(FileManager)
-            every { FileManager.deleteIfExists(dirPath) } just Runs
-            every { FileManager.upload(img, filePath) } just Runs
 
             val result = instructionService.replaceProfileImage(img)
             it("프로필 이미지 대체 로직을 호출한다") {
-                verify { fileNamer.createUploadDirPath(FileUploadType.PROFILE) }
-                verify { FileManager.deleteIfExists(dirPath) }
+                verify { FileManager.deleteIfExists(Path.of(instruction.profileImageUrl!!)) }
                 verify { FileManager.upload(img, filePath) }
                 verify { instructionCommandPort.updateProfile(filePath.toString()) }
                 result.uri shouldBe uri.toString()
             }
         }
 
+        context("업로드 실패한 경우") {
+            every { img.contentType } returns "image/png"
+            every { FileManager.upload(img, filePath) } throws RuntimeException("업로드 실패")
+            it("예외가 발생한다") {
+                val e = shouldThrow<RuntimeException> { instructionService.replaceProfileImage(img) }
+                e.message shouldBe "업로드 실패"
+                verify(exactly = 0) { instructionCommandPort.updateProfile(filePath.toString()) }
+                verify(exactly = 0) { FileManager.deleteIfExists(Path.of(instruction.profileImageUrl!!)) }
+            }
+        }
+
         context("이미지 파일이 아닌 경우") {
-            val img = mockk<MultipartFile>(relaxed = true)
             every { img.contentType } returns "application/pdf"
 
             it("예외가 발생한다") {
