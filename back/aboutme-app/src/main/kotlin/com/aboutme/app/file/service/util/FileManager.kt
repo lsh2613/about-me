@@ -50,6 +50,7 @@ class FileManager {
                 log.info("Directory deleted to: {}", path)
             }.onFailure { e ->
                 log.error("Failed to delete file: {}", path, e)
+                throw e
             }
         }
     }
