@@ -30,6 +30,7 @@ class EmailTest : DescribeSpec({
                 listOf(
                     "",
                     " ",
+                    "user123@domain.n",
                     " user123@domain.net",
                     "user123@domain.net ",
                     "plainaddress",

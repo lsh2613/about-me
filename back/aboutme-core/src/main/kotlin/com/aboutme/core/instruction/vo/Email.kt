@@ -10,6 +10,6 @@ class Email(
     }
 
     companion object {
-        private const val REGEX: String = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,3})+$"
+        private const val REGEX: String = "^\\w+([\\.-]?\\w+)*@\\w+([\\.-]?\\w+)*(\\.\\w{2,})+$"
     }
 }
