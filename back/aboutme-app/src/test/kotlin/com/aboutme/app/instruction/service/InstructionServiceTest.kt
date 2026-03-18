@@ -129,6 +129,7 @@ class InstructionServiceTest : DescribeSpec({
 
         context("이미지 파일인 경우") {
             every { img.contentType } returns "image/png"
+            every { FileManager.upload(img, filePath) } just Runs
             val uri =
                 Path.of("http://localhost:8080/test-upload/profile").toUri().also {
                     every { fileNamer.toUri(filePath) } returns it
