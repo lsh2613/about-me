@@ -68,8 +68,9 @@ class FileNamer {
         return newFileName
     }
 
-    private fun extractExtension(file: MultipartFile): String {
-        val originalFilename = file.originalFilename!!
-        return originalFilename.substringAfterLast('.', "")
+    fun extractExtension(file: MultipartFile): String {
+        val extension = file.originalFilename?.substringAfterLast('.', "")
+        require(!extension.isNullOrEmpty()) { "확장자가 없습니다." }
+        return extension
     }
 }
