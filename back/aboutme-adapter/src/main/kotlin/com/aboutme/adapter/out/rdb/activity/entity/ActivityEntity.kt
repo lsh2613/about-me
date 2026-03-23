@@ -3,6 +3,8 @@ package com.aboutme.adapter.out.rdb.activity.entity
 import com.aboutme.adapter.out.rdb.common.entity.BaseEntity
 import com.aboutme.core.activity.domain.ActivityType
 import jakarta.persistence.Entity
+import jakarta.persistence.EnumType
+import jakarta.persistence.Enumerated
 import jakarta.persistence.Table
 import java.time.LocalDate
 
@@ -34,6 +36,8 @@ class ActivityEntity(
 
     var name: String = name
         protected set
+
+    @Enumerated(EnumType.STRING)
     var activityType: ActivityType = activityType
         protected set
     var startDate: LocalDate = startDate
