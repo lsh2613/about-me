@@ -4,6 +4,7 @@ import com.aboutme.adapter.`in`.http.activity.controller.api.ActivityApi
 import com.aboutme.adapter.`in`.http.activity.req.ActivitySyncReq
 import com.aboutme.app.activity.port.`in`.ActivityUseCase
 import com.aboutme.app.activity.service.dto.rep.ActivityDetailRep
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PutMapping
@@ -16,7 +17,7 @@ class ActivityController(
 ) : ActivityApi {
     @PutMapping("/activities")
     override fun sync(
-        @RequestBody reqs: List<ActivitySyncReq>,
+        @RequestBody @Validated reqs: List<ActivitySyncReq>,
     ) {
         activityUseCase.sync(reqs.map(ActivitySyncReq::toCommand))
     }
