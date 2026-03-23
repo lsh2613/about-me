@@ -6,7 +6,7 @@ import com.aboutme.core.instruction.vo.Email
 import com.appmattus.kotlinfixture.Fixture
 
 @Util
-class InstructionMocker {
+class InstructionFixture {
     companion object {
         fun createMock1(): Instruction {
             val fixture = Fixture()
