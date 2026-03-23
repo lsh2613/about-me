@@ -1,6 +1,6 @@
 package com.aboutme.app.instruction.service
 
-import com.aboutme.app.common.util.InstructionMocker
+import com.aboutme.app.common.util.InstructionFixture
 import com.aboutme.app.file.service.helper.FileNamer
 import com.aboutme.app.file.service.util.FileManager
 import com.aboutme.app.instruction.port.out.InstructionCommandPort
@@ -37,7 +37,7 @@ class InstructionServiceTest : DescribeSpec({
             fileNamer = fileNamer,
         )
 
-    val instruction = InstructionMocker.createMock1()
+    val instruction = InstructionFixture.createMock1()
 
     describe("자기소개 생성/수정") {
         context("자기소개가 존재하지 않으면") {
@@ -62,7 +62,7 @@ class InstructionServiceTest : DescribeSpec({
 
         context("자기소개가 존재하면") {
             every { instructionQueryPort.findOrNull() } returns instruction
-            val update = InstructionMocker.createMock2()
+            val update = InstructionFixture.createMock2()
 
             with(
                 InstructionCommand(
