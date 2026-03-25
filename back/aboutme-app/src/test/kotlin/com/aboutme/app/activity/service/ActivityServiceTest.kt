@@ -39,47 +39,6 @@ class ActivityServiceTest : DescribeSpec({
     )
 
     describe("활동이력 동기화 검증") {
-        describe("seq 검증") {
-            context("seq가 1부터 시작하고 누락이 없으면") {
-                val commands =
-                    listOf(
-                        createCommand(seq = 2),
-                        createCommand(seq = 1),
-                        createCommand(seq = 3),
-                    )
-                it("예외가 발생하지 않는다") {
-                    shouldNotThrowAny { activityService.sync(commands) }
-                }
-            }
-
-            context("seq가 1부터 시작하지 않으면") {
-                it("예외가 발생한다") {
-                    val e =
-                        shouldThrow<GlobalException> {
-                            activityService.sync(listOf(createCommand(seq = 2)))
-                        }
-                    e.errorCode shouldBe ActivityErrorCode.INVALID_SEQ
-                }
-            }
-
-            context("seq 사이에 누락이 있거나 중복이면") {
-                val missingSeqCommands = listOf(createCommand(seq = 1), createCommand(seq = 3))
-                val duplicatedSeqCommands =
-                    listOf(createCommand(seq = 1), createCommand(seq = 2), createCommand(seq = 2))
-
-                it("예외가 발생한다") {
-                    shouldThrow<GlobalException> { activityService.sync(missingSeqCommands) }
-                    shouldThrow<GlobalException> { activityService.sync(duplicatedSeqCommands) }
-                }
-            }
-
-            context("활동 이력이 하나도 존재하지 않으면") {
-                it("예외가 발생한다") {
-                    shouldThrow<IllegalArgumentException> { activityService.sync(emptyList()) }
-                }
-            }
-        }
-
         describe("LocalDate 검증") {
             context("종료일이 시작일보다 이전이면") {
                 val now = LocalDate.now()

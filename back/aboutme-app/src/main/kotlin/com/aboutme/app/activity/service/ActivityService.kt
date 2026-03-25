@@ -5,6 +5,7 @@ import com.aboutme.app.activity.port.out.ActivityCommandPort
 import com.aboutme.app.activity.port.out.ActivityQueryPort
 import com.aboutme.app.activity.service.dto.command.ActivitySyncCommand
 import com.aboutme.app.activity.service.dto.rep.ActivityDetailRep
+import com.aboutme.app.common.util.CommonValidationUtil
 import com.aboutme.common.exception.GlobalException
 import com.aboutme.core.activity.error.ActivityErrorCode
 import org.springframework.stereotype.Service
@@ -17,7 +18,7 @@ class ActivityService(
 ) : ActivityUseCase {
     @Transactional
     override fun sync(commands: List<ActivitySyncCommand>) {
-        validateSequentialSeq(commands)
+        CommonValidationUtil.validateSequence(commands.map { it.seq })
         validateChronologicalPeriod(commands)
 
         deleteNotInCommands(commands)
@@ -66,16 +67,6 @@ class ActivityService(
                 seq = command.seq,
             )
             activityCommandPort.update(this)
-        }
-    }
-
-    private fun validateSequentialSeq(commands: List<ActivitySyncCommand>) {
-        require(commands.isNotEmpty()) { "활동 이력은 하나 이상 존재해야 합니다." }
-
-        val sortedSeq = commands.map(ActivitySyncCommand::seq).sorted()
-        val sequentialSeq = (1..commands.size).toList()
-        if (sortedSeq != sequentialSeq) {
-            throw GlobalException(ActivityErrorCode.INVALID_SEQ)
         }
     }
 
