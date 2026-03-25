@@ -47,11 +47,11 @@ class AwardService(
     ) {
         awardQueryPort.findOrThrow(it).apply {
             update(
-                name = name,
-                issuer = issuer,
-                issueDate = issueDate,
-                description = description,
-                seq = seq,
+                name = command.name,
+                issuer = command.issuer,
+                issueDate = command.issueDate,
+                description = command.description,
+                seq = command.seq,
             )
         }.also { awardCommandPort.update(it) }
     }
