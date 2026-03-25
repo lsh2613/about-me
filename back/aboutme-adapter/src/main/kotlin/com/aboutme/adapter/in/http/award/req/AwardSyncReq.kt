@@ -8,6 +8,8 @@ import java.time.LocalDate
 
 @Schema(title = "수상이력 Sync 요청")
 data class AwardSyncReq(
+    @field:Schema(title = "수상이력 id")
+    val id: Long? = null,
     @field:Schema(title = "수상이력 이름")
     @field:Size(min = 1, max = 50, message = "수상이력 이름은 1자 이상 50자 이하로 입력해야 합니다.")
     val name: String,
@@ -25,6 +27,7 @@ data class AwardSyncReq(
 ) {
     fun toCommand() =
         AwardSyncCommand(
+            id = id,
             name = name,
             issuer = issuer,
             issueDate = issueDate,
