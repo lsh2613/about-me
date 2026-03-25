@@ -16,6 +16,9 @@ class ActivityService(
 ) : ActivityUseCase {
     @Transactional
     override fun sync(commands: List<ActivitySyncCommand>) {
+        require(commands.isNotEmpty()) {
+            "활동 이력은 하나 이상 존재해야 합니다."
+        }
         CommonValidationUtil.validateSequence(commands.map { it.seq })
 
         deleteNotInCommands(commands)
