@@ -5,15 +5,15 @@ import java.time.LocalDate
 import java.time.LocalDateTime
 
 data class ActivityDetailRep(
-    var id: Long,
-    var name: String,
-    var activityTypeDesc: String,
-    var startDate: LocalDate,
-    var endDate: LocalDate?,
-    var description: String,
-    var seq: Int,
-    var createdAt: LocalDateTime,
-    var updatedAt: LocalDateTime,
+    val id: Long,
+    val name: String,
+    val activityTypeDesc: String,
+    val startDate: LocalDate,
+    val endDate: LocalDate?,
+    val description: String,
+    val seq: Int,
+    val createdAt: LocalDateTime,
+    val updatedAt: LocalDateTime,
 ) {
     companion object {
         fun of(activity: Activity): ActivityDetailRep {

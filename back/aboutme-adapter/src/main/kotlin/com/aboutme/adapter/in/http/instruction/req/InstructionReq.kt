@@ -12,10 +12,10 @@ data class InstructionReq(
 ) {
     fun toCommand(): InstructionCommand =
         InstructionCommand(
-            name = name,
-            emails = emails.map { Email(it) },
-            region = region,
-            education = education,
-            skills = skills,
+            name = this.name,
+            emails = this.emails.map { Email(it) },
+            region = this.region,
+            education = this.education,
+            skills = this.skills,
         )
 }

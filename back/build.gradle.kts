@@ -55,6 +55,7 @@ subprojects {
 
     tasks.withType<Test> {
         useJUnitPlatform()
+        outputs.upToDateWhen { false }
     }
 
     dependencies {
