@@ -27,11 +27,11 @@ data class AwardSyncReq(
 ) {
     fun toCommand() =
         AwardSyncCommand(
-            id = id,
-            name = name,
-            issuer = issuer,
-            issueDate = issueDate,
-            description = description,
-            seq = seq,
+            id = this.id,
+            name = this.name,
+            issuer = this.issuer,
+            issueDate = this.issueDate,
+            description = this.description,
+            seq = this.seq,
         )
 }

@@ -30,12 +30,12 @@ data class ActivitySyncReq(
 ) {
     fun toCommand() =
         ActivitySyncCommand(
-            activityId = activityId,
-            name = name,
-            activityType = activityType,
-            startDate = startDate,
-            endDate = endDate,
-            description = description,
-            seq = seq,
+            activityId = this.activityId,
+            name = this.name,
+            activityType = this.activityType,
+            startDate = this.startDate,
+            endDate = this.endDate,
+            description = this.description,
+            seq = this.seq,
         )
 }
