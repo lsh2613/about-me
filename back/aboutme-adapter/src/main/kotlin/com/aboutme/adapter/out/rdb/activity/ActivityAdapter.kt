@@ -35,8 +35,8 @@ class ActivityAdapter(
             update(
                 name = activity.name,
                 activityType = activity.activityType,
-                startDate = activity.startDate,
-                endDate = activity.endDate,
+                startDate = activity.dateRange.startDate,
+                endDate = activity.dateRange.endDate,
                 description = activity.description,
                 seq = activity.seq,
             )

@@ -6,8 +6,6 @@ import com.aboutme.app.activity.port.out.ActivityQueryPort
 import com.aboutme.app.activity.service.dto.command.ActivitySyncCommand
 import com.aboutme.app.activity.service.dto.rep.ActivityDetailRep
 import com.aboutme.app.common.util.CommonValidationUtil
-import com.aboutme.common.exception.GlobalException
-import com.aboutme.core.activity.error.ActivityErrorCode
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -19,7 +17,6 @@ class ActivityService(
     @Transactional
     override fun sync(commands: List<ActivitySyncCommand>) {
         CommonValidationUtil.validateSequence(commands.map { it.seq })
-        validateChronologicalPeriod(commands)
 
         deleteNotInCommands(commands)
         saveOrUpdate(commands)
@@ -61,22 +58,11 @@ class ActivityService(
             update(
                 name = command.name,
                 activityType = command.activityType,
-                startDate = command.startDate,
-                endDate = command.endDate,
+                dateRange = command.dateRange,
                 description = command.description,
                 seq = command.seq,
             )
             activityCommandPort.update(this)
-        }
-    }
-
-    private fun validateChronologicalPeriod(commands: List<ActivitySyncCommand>) {
-        commands.forEach { command ->
-            command.endDate?.let { endDate ->
-                if (endDate.isBefore(command.startDate)) {
-                    throw GlobalException(ActivityErrorCode.INVALID_PERIOD)
-                }
-            }
         }
     }
 }

@@ -4,11 +4,8 @@ import com.aboutme.app.activity.port.out.ActivityCommandPort
 import com.aboutme.app.activity.port.out.ActivityQueryPort
 import com.aboutme.app.activity.service.dto.command.ActivitySyncCommand
 import com.aboutme.app.common.util.ActivityFixture
-import com.aboutme.common.exception.GlobalException
 import com.aboutme.core.activity.domain.ActivityType
-import com.aboutme.core.activity.error.ActivityErrorCode
-import io.kotest.assertions.throwables.shouldNotThrowAny
-import io.kotest.assertions.throwables.shouldThrow
+import com.aboutme.core.common.vo.DateRange
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.inspectors.forExactly
 import io.kotest.matchers.shouldBe
@@ -32,98 +29,66 @@ class ActivityServiceTest : DescribeSpec({
         activityId = id,
         name = "활동 $seq",
         activityType = ActivityType.PART_TIME,
-        startDate = LocalDate.now(),
-        endDate = LocalDate.now(),
+        dateRange =
+            DateRange(
+                startDate = LocalDate.now(),
+                endDate = LocalDate.now(),
+            ),
         description = "설명",
         seq = seq,
     )
 
     describe("활동이력 동기화 검증") {
-        describe("LocalDate 검증") {
-            context("종료일이 시작일보다 이전이면") {
-                val now = LocalDate.now()
-                val commands =
-                    listOf(
-                        ActivitySyncCommand(
-                            activityId = null,
-                            name = "활동",
-                            activityType = ActivityType.PART_TIME,
-                            startDate = now,
-                            endDate = now.minusDays(1),
-                            description = "설명",
-                            seq = 1,
-                        ),
-                    )
+        context("저장되어 있는 활동 이력의 id가 command에 포함되어 있지 않다면") {
+            val existingActivities =
+                listOf(
+                    ActivityFixture.create(id = 1L),
+                    ActivityFixture.create(id = 2L),
+                    ActivityFixture.create(id = 3L),
+                )
+            every { activityQueryPort.findAll() } returns existingActivities
 
-                it("예외가 발생한다") {
-                    val e = shouldThrow<GlobalException> { activityService.sync(commands) }
-                    e.errorCode shouldBe ActivityErrorCode.INVALID_PERIOD
-                }
-            }
+            val commands =
+                listOf(
+                    createCommand(id = 1L, seq = 1),
+                    createCommand(id = 2L, seq = 2),
+                )
 
-            context("종료일이 존재하지 않거나 시작일 이후이면") {
-                it("예외가 발생하지 않는다") {
-                    val now = LocalDate.now()
-                    val openEnded = createCommand(seq = 1).copy(endDate = null)
-                    val afterStart = createCommand(seq = 2).copy(endDate = now.plusDays(1))
-
-                    shouldNotThrowAny { activityService.sync(listOf(openEnded, afterStart)) }
-                }
+            it("command에 포함되어 있지 않은 기존 활동 이력은 삭제된다") {
+                activityService.sync(commands)
+                verify(exactly = 1) { activityCommandPort.delete(listOf(3L)) }
             }
         }
 
-        describe("기존 활동 이력과 비교하여 삭제/수정/생성 수행") {
-            context("저장되어 있는 활동 이력의 id가 command에 포함되어 있지 않다면") {
-                val existingActivities =
-                    listOf(
-                        ActivityFixture.create(id = 1L),
-                        ActivityFixture.create(id = 2L),
-                        ActivityFixture.create(id = 3L),
-                    )
-                every { activityQueryPort.findAll() } returns existingActivities
+        context("command에 id가 null이라면") {
+            val commands =
+                listOf(
+                    createCommand(seq = 1),
+                    createCommand(seq = 2),
+                )
 
-                val commands =
-                    listOf(
-                        createCommand(id = 1L, seq = 1),
-                        createCommand(id = 2L, seq = 2),
-                    )
-
-                it("command에 포함되어 있지 않은 기존 활동 이력은 삭제된다") {
-                    activityService.sync(commands)
-                    verify(exactly = 1) { activityCommandPort.delete(listOf(3L)) }
-                }
+            it("새로운 활동 이력이 생성된다") {
+                activityService.sync(commands)
+                verify(exactly = 2) { activityCommandPort.save(any()) }
             }
+        }
 
-            context("command에 id가 null이라면") {
-                val commands =
-                    listOf(
-                        createCommand(seq = 1),
-                        createCommand(seq = 2),
-                    )
+        context("command에 id가 존재한다면") {
+            val activity1 = ActivityFixture.create(id = 1L)
+            val activity2 = ActivityFixture.create(id = 2L)
+            every { activityQueryPort.findOrThrow(activity1.id!!) } returns activity1
+            every { activityQueryPort.findOrThrow(activity2.id!!) } returns activity2
 
-                it("새로운 활동 이력이 생성된다") {
-                    activityService.sync(commands)
-                    verify(exactly = 2) { activityCommandPort.save(any()) }
-                }
-            }
+            val commands =
+                listOf(
+                    createCommand(id = 1L, seq = 1),
+                    createCommand(id = 2L, seq = 2),
+                )
 
-            context("command에 id가 존재한다면") {
-                val activity1 = ActivityFixture.create(id = 1L)
-                val activity2 = ActivityFixture.create(id = 2L)
-                every { activityQueryPort.findOrThrow(activity1.id!!) } returns activity1
-                every { activityQueryPort.findOrThrow(activity2.id!!) } returns activity2
-
-                val commands =
-                    listOf(
-                        createCommand(id = 1L, seq = 1),
-                        createCommand(id = 2L, seq = 2),
-                    )
-
-                it("기존 활동 이력이 수정된다") {
-                    activityService.sync(commands)
-                    verify { activityCommandPort.update(activity1) }
-                    verify { activityCommandPort.update(activity2) }
-                }
+            it("기존 활동 이력이 수정된다") {
+                activityService.sync(commands)
+                verify { activityCommandPort.update(activity1) }
+                verify { activityCommandPort.update(activity2) }
             }
         }
     }
