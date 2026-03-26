@@ -1,70 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="CompilerConfiguration">
-    <bytecodeTargetLevel>
-      <module name="back.aboutme-adapter.adapter-api" target="21" />
-      <module name="back.aboutme-adapter.adapter-api.main" target="21" />
-      <module name="back.aboutme-adapter.adapter-api.test" target="21" />
-      <module name="back.aboutme-adapter.adapter-rdb" target="21" />
-      <module name="back.aboutme-adapter.adapter-rdb.main" target="21" />
-      <module name="back.aboutme-adapter.adapter-rdb.test" target="21" />
-      <module name="back.aboutme-ai" target="21" />
-      <module name="back.aboutme-ai.main" target="21" />
-      <module name="back.aboutme-ai.test" target="21" />
-      <module name="back.aboutme-external-api" target="21" />
-      <module name="back.aboutme-external-api.main" target="21" />
-      <module name="back.aboutme-external-api.test" target="21" />
-      <module name="back.aboutme-infra" target="21" />
-      <module name="back.aboutme-infra.main" target="21" />
-      <module name="back.aboutme-infra.test" target="21" />
-      <module name="back.main" target="21" />
-      <module name="back.test" target="21" />
-      <module name="com.aboutme.back.aboutme-core.main" target="21" />
-      <module name="com.aboutme.back.aboutme-core.test" target="21" />
-      <module name="com.back.main" target="21" />
-      <module name="com.back.test" target="21" />
-    </bytecodeTargetLevel>
+    <bytecodeTargetLevel target="21"/>
   </component>
   <component name="JavacSettings">
-    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="about-me.back.main" options="-parameters" />
-      <module name="about-me.back.test" options="-parameters" />
-      <module name="aboutme.back.main" options="-parameters" />
-      <module name="aboutme.back.test" options="-parameters" />
-      <module name="back" options="-parameters" />
-      <module name="back.aboutme-adapter" options="-parameters" />
-      <module name="back.aboutme-adapter.adapter-api" options="-parameters" />
-      <module name="back.aboutme-adapter.adapter-api.main" options="-parameters" />
-      <module name="back.aboutme-adapter.adapter-api.test" options="-parameters" />
-      <module name="back.aboutme-adapter.adapter-rdb" options="-parameters" />
-      <module name="back.aboutme-adapter.adapter-rdb.main" options="-parameters" />
-      <module name="back.aboutme-adapter.adapter-rdb.test" options="-parameters" />
-      <module name="back.aboutme-adapter.main" options="-parameters" />
-      <module name="back.aboutme-adapter.test" options="-parameters" />
-      <module name="back.aboutme-ai" options="-parameters" />
-      <module name="back.aboutme-ai.main" options="-parameters" />
-      <module name="back.aboutme-ai.test" options="-parameters" />
-      <module name="back.aboutme-app" options="-parameters" />
-      <module name="back.aboutme-app.main" options="-parameters" />
-      <module name="back.aboutme-app.test" options="-parameters" />
-      <module name="back.aboutme-bootstrap" options="-parameters" />
-      <module name="back.aboutme-bootstrap.main" options="-parameters" />
-      <module name="back.aboutme-bootstrap.test" options="-parameters" />
-      <module name="back.aboutme-common" options="-parameters" />
-      <module name="back.aboutme-common.main" options="-parameters" />
-      <module name="back.aboutme-common.test" options="-parameters" />
-      <module name="back.aboutme-core" options="-parameters" />
-      <module name="back.aboutme-core.main" options="-parameters" />
-      <module name="back.aboutme-core.test" options="-parameters" />
-      <module name="back.aboutme-external-api" options="-parameters" />
-      <module name="back.aboutme-external-api.main" options="-parameters" />
-      <module name="back.aboutme-external-api.test" options="-parameters" />
-      <module name="back.main" options="-parameters" />
-      <module name="back.test" options="-parameters" />
-      <module name="com.aboutme.back.aboutme-core.main" options="-parameters" />
-      <module name="com.aboutme.back.aboutme-core.test" options="-parameters" />
-      <module name="com.back.main" options="-parameters" />
-      <module name="com.back.test" options="-parameters" />
-    </option>
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-parameters" />
   </component>
 </project>
