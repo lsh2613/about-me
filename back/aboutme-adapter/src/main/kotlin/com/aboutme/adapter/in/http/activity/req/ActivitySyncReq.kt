@@ -2,6 +2,7 @@ package com.aboutme.adapter.`in`.http.activity.req
 
 import com.aboutme.app.activity.service.dto.command.ActivitySyncCommand
 import com.aboutme.core.activity.domain.ActivityType
+import com.aboutme.core.common.vo.DateRange
 import io.swagger.v3.oas.annotations.media.Schema
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
@@ -33,8 +34,11 @@ data class ActivitySyncReq(
             activityId = this.activityId,
             name = this.name,
             activityType = this.activityType,
-            startDate = this.startDate,
-            endDate = this.endDate,
+            dateRange =
+                DateRange(
+                    startDate = this.startDate,
+                    endDate = this.endDate,
+                ),
             description = this.description,
             seq = this.seq,
         )

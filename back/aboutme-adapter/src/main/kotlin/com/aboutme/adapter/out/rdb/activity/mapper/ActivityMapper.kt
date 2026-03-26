@@ -2,6 +2,7 @@ package com.aboutme.adapter.out.rdb.activity.mapper
 
 import com.aboutme.adapter.out.rdb.activity.entity.ActivityEntity
 import com.aboutme.core.activity.domain.Activity
+import com.aboutme.core.common.vo.DateRange
 
 class ActivityMapper {
     companion object {
@@ -10,8 +11,11 @@ class ActivityMapper {
                 id = entity.id,
                 name = entity.name,
                 activityType = entity.activityType,
-                startDate = entity.startDate,
-                endDate = entity.endDate,
+                dateRange =
+                    DateRange(
+                        startDate = entity.startDate,
+                        endDate = entity.endDate,
+                    ),
                 description = entity.description,
                 seq = entity.seq,
                 createdAt = entity.createdAt,
@@ -22,8 +26,8 @@ class ActivityMapper {
             ActivityEntity(
                 name = activity.name,
                 activityType = activity.activityType,
-                startDate = activity.startDate,
-                endDate = activity.endDate,
+                startDate = activity.dateRange.startDate,
+                endDate = activity.dateRange.endDate,
                 description = activity.description,
                 seq = activity.seq,
             )

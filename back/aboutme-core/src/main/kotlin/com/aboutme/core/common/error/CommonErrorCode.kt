@@ -1,4 +1,4 @@
-package com.aboutme.app.common.error
+package com.aboutme.core.common.error
 
 import com.aboutme.common.exception.payload.BaseErrorCode
 import com.aboutme.common.exception.payload.ReasonCode

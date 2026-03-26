@@ -1,7 +1,7 @@
 package com.aboutme.app.common.util
 
-import com.aboutme.app.common.error.CommonErrorCode
 import com.aboutme.common.exception.GlobalException
+import com.aboutme.core.common.error.CommonErrorCode
 import io.kotest.assertions.throwables.shouldNotThrowAny
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.core.spec.style.DescribeSpec
