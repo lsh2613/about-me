@@ -1,30 +1,9 @@
 package com.aboutme.adapter.out.rdb.common.entity
 
-import com.aboutme.core.common.domain.EntityStatus
-import jakarta.persistence.Column
-import jakarta.persistence.EnumType
-import jakarta.persistence.Enumerated
 import jakarta.persistence.MappedSuperclass
+import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class SoftDeletableEntity : BaseEntity() {
-    @Enumerated(EnumType.STRING)
-    @Column(columnDefinition = "VARCHAR")
-    private var status: EntityStatus = EntityStatus.ACTIVE
-
-    fun active() {
-        status = EntityStatus.ACTIVE
-    }
-
-    fun isActive(): Boolean {
-        return status == EntityStatus.ACTIVE
-    }
-
-    fun delete() {
-        status = EntityStatus.DELETED
-    }
-
-    fun isDeleted(): Boolean {
-        return status == EntityStatus.DELETED
-    }
+    private val deletedAt: LocalDateTime? = null
 }
