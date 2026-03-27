@@ -4,7 +4,7 @@ enum class FileUploadType(
     val mime: MIME,
     val subPath: String,
 ) {
-    PROFILE(MIME.IMAGE, "instruction/profile"),
+    PROFILE(MIME.IMAGE, "profile"),
     ;
 
     fun isValidMimeType(contentType: String): Boolean {
