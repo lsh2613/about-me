@@ -1,8 +1,8 @@
 package com.aboutme.app.essay.service.dto.command
 
 data class EssaySyncCommand(
-    var id: Long?,
-    var title: String,
-    var content: String,
-    var seq: Int,
+    val id: Long? = null,
+    val title: String,
+    val content: String,
+    val seq: Int,
 )
