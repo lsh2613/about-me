@@ -55,7 +55,8 @@ class SecurityConfig(
     fun filterChain(http: HttpSecurity): SecurityFilterChain {
         return defaultSecurity(http)
             .authorizeHttpRequests {
-                defaultAuthorizeHttpRequests(it) // todo ADMIN api 구분 정책 필요
+                defaultAuthorizeHttpRequests(it)
+                    .requestMatchers("/admin/**").hasRole("ADMIN")
                     .anyRequest().permitAll()
             }
             .httpBasic {}
