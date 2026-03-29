@@ -5,6 +5,7 @@ import io.swagger.v3.oas.models.OpenAPI
 import io.swagger.v3.oas.models.info.Info
 import io.swagger.v3.oas.models.security.SecurityRequirement
 import io.swagger.v3.oas.models.security.SecurityScheme
+import org.springdoc.core.models.GroupedOpenApi
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.core.env.Environment
@@ -17,17 +18,39 @@ class SwaggerConfig(
 ) {
     @Bean
     fun openAPI(): OpenAPI {
-        val securityRequirement = SecurityRequirement().addList(Elements.BASIC_AUTH)
-
         return OpenAPI()
             .info(apiInfo())
-            .addSecurityItem(securityRequirement)
-            .components(securitySchemes())
     }
 
     @Bean
     fun forwardedHeaderFilter(): ForwardedHeaderFilter {
         return ForwardedHeaderFilter()
+    }
+
+    @Bean
+    fun adminApiGroup(): GroupedOpenApi {
+        return GroupedOpenApi
+            .builder()
+            .group("admin")
+            .pathsToMatch("/admin/**")
+            .addOpenApiCustomizer { openApi ->
+                val securityRequirement = SecurityRequirement().addList(Elements.BASIC_AUTH)
+                openApi.addSecurityItem(securityRequirement)
+
+                val components = openApi.components ?: Components()
+                components.addSecuritySchemes(Elements.BASIC_AUTH, basicAuthScheme())
+                openApi.components(components)
+            }
+            .build()
+    }
+
+    @Bean
+    fun publicApiGroup(): GroupedOpenApi {
+        return GroupedOpenApi
+            .builder()
+            .group("public")
+            .pathsToExclude("/admin/**")
+            .build()
     }
 
     private fun extractActiveProfile(): String {
@@ -43,12 +66,9 @@ class SwaggerConfig(
             .version("v1.0.0")
     }
 
-    private fun securitySchemes(): Components {
-        val basicAuthScheme =
-            SecurityScheme()
-                .type(SecurityScheme.Type.HTTP)
-                .scheme("basic")
-
-        return Components().addSecuritySchemes(Elements.BASIC_AUTH, basicAuthScheme)
+    private fun basicAuthScheme(): SecurityScheme {
+        return SecurityScheme()
+            .type(SecurityScheme.Type.HTTP)
+            .scheme("basic")
     }
 }
