@@ -20,7 +20,7 @@ class CertificateAdapter(
 
     override fun findAll(): List<Certificate> {
         return certificateJpaRepository.findAll()
-            .map { CertificateMapper.Companion.toDomain(it) }
+            .map { CertificateMapper.toDomain(it) }
     }
 
     override fun findOrThrow(id: Long): Certificate {
