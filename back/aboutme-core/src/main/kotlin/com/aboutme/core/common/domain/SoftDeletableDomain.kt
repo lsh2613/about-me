@@ -2,7 +2,8 @@ package com.aboutme.core.common.domain
 
 import java.time.LocalDateTime
 
-abstract class Domain(
+abstract class SoftDeletableDomain(
     createdAt: LocalDateTime? = null,
     updatedAt: LocalDateTime? = null,
-) : Timestampable(createdAt, updatedAt)
+    open val deletedAt: LocalDateTime? = null,
+) : Domain(createdAt, updatedAt)
