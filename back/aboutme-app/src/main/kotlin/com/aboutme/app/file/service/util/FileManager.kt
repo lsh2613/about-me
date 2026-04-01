@@ -3,6 +3,7 @@ package com.aboutme.app.file.service.util
 import com.aboutme.app.file.service.helper.FileDeleter
 import com.aboutme.common.extension.logger
 import org.springframework.web.multipart.MultipartFile
+import java.io.ByteArrayInputStream
 import java.nio.file.Files
 import java.nio.file.Path
 
@@ -18,6 +19,21 @@ class FileManager {
             runCatching {
                 mkdirsIfNotExists(filePath.parent)
                 file.transferTo(filePath)
+            }.onSuccess {
+                log.info("File uploaded to: {}", filePath)
+            }.onFailure { e ->
+                log.error("Failed to upload file: {}", filePath, e)
+                throw e
+            }
+        }
+
+        fun upload(
+            file: ByteArrayInputStream,
+            filePath: Path,
+        ) {
+            runCatching {
+                mkdirsIfNotExists(filePath.parent)
+                file.transferTo(Files.newOutputStream(filePath))
             }.onSuccess {
                 log.info("File uploaded to: {}", filePath)
             }.onFailure { e ->
@@ -43,14 +59,31 @@ class FileManager {
             runCatching {
                 if (Files.isDirectory(path)) {
                     Files.walkFileTree(path, fileDeleter)
-                } else {
-                    Files.deleteIfExists(path)
+                    return@runCatching
+                }
+
+                val isDeleted = Files.deleteIfExists(path)
+                if (isDeleted) {
+                    deleteDirIfEmpty(path.parent)
                 }
             }.onSuccess {
                 log.info("Directory deleted to: {}", path)
             }.onFailure { e ->
                 log.error("Failed to delete file: {}", path, e)
                 throw e
+            }
+        }
+
+        private fun deleteDirIfEmpty(path: Path?) {
+            if (path == null || !Files.isDirectory(path)) {
+                return
+            }
+
+            Files.newDirectoryStream(path).use { stream ->
+                if (!stream.iterator().hasNext()) {
+                    Files.deleteIfExists(path)
+                    log.info("Empty directory deleted to: {}", path)
+                }
             }
         }
     }

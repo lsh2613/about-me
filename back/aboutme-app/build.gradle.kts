@@ -15,6 +15,7 @@ dependencies {
     // main
     implementation("jakarta.annotation:jakarta.annotation-api:2.1.1")
     implementation("org.springframework:spring-tx")
+    implementation("org.jsoup:jsoup:1.22.1")
 
     // test
     testImplementation("io.mockk:mockk:1.14.9")
