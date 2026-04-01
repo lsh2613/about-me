@@ -4,6 +4,6 @@ import jakarta.persistence.MappedSuperclass
 import java.time.LocalDateTime
 
 @MappedSuperclass
-abstract class SoftDeletableEntity : BaseEntity() {
+abstract class SoftDeletableEntity(id: Long? = null) : BaseEntity(id) {
     private val deletedAt: LocalDateTime? = null
 }
