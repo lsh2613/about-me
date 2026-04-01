@@ -5,5 +5,5 @@ import java.time.LocalDateTime
 
 @MappedSuperclass
 abstract class SoftDeletableEntity(id: Long? = null) : BaseEntity(id) {
-    private val deletedAt: LocalDateTime? = null
+    val deletedAt: LocalDateTime? = null
 }
