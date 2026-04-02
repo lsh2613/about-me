@@ -1,8 +1,10 @@
 package com.aboutme.adapter.common.config
 
+import com.aboutme.adapter.common.resolver.page.CustomPageableArgumentResolver
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.CacheControl
+import org.springframework.web.method.support.HandlerMethodArgumentResolver
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 import java.time.Duration
@@ -20,5 +22,9 @@ class WebConfig : WebMvcConfigurer {
 
     fun cacheControl(): CacheControl {
         return CacheControl.maxAge(Duration.ofHours(1)).cachePublic()
+    }
+
+    override fun addArgumentResolvers(resolvers: MutableList<HandlerMethodArgumentResolver?>) {
+        resolvers.add(CustomPageableArgumentResolver())
     }
 }
