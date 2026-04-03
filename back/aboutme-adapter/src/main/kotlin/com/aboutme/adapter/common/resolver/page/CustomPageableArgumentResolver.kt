@@ -13,7 +13,7 @@ import org.springframework.web.method.support.ModelAndViewContainer
 class CustomPageableArgumentResolver : HandlerMethodArgumentResolver {
     companion object {
         private const val DEFAULT_PAGE_SIZE = 12
-        private const val DEFAULT_SORT_DIRECTION = "DESC"
+        private val DEFAULT_SORT_DIRECTION = Sort.Direction.DESC
         private val DEFAULT_SORT = Sort.by(DEFAULT_SORT_DIRECTION, "createdAt")
     }
 
@@ -71,8 +71,8 @@ class CustomPageableArgumentResolver : HandlerMethodArgumentResolver {
 
     private fun sortOrder(sortInfo: List<String>): Sort.Order {
         val field = sortInfo[0]
-        val direction = sortInfo.getOrNull(1) ?: DEFAULT_SORT_DIRECTION
-        val sortDirection = Sort.Direction.fromString(direction)
+        val direction = sortInfo.getOrNull(1)
+        val sortDirection = direction?.let { Sort.Direction.fromString(it) } ?: DEFAULT_SORT_DIRECTION
         return Sort.Order(sortDirection, field)
     }
 }
