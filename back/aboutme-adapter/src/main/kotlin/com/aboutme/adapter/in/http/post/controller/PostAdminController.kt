@@ -4,6 +4,7 @@ import com.aboutme.adapter.common.annotation.AdminController
 import com.aboutme.adapter.`in`.http.post.controller.api.PostAdminApi
 import com.aboutme.adapter.`in`.http.post.req.PostCreateOrUpdateReq
 import com.aboutme.app.post.port.`in`.PostUseCase
+import org.springframework.data.domain.Pageable
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -24,7 +25,7 @@ class PostAdminController(
     }
 
     @GetMapping("/posts")
-    override fun readAdminDetails() = postUseCase.readAdminDetails()
+    override fun readAdminDetails(pageable: Pageable) = postUseCase.readAdminDetails(pageable)
 
     @PutMapping("/posts/{postId}")
     override fun update(

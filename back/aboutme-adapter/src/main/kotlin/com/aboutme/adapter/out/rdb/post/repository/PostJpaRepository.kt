@@ -6,9 +6,6 @@ import org.springframework.data.jpa.repository.Modifying
 import org.springframework.data.jpa.repository.Query
 
 interface PostJpaRepository : JpaRepository<PostEntity, Long> {
-    @Query("SELECT * FROM post", nativeQuery = true)
-    fun findAllWithDeleted(): List<PostEntity>
-
     @Query("DELETE FROM post WHERE id = :postId", nativeQuery = true)
     fun hardDelete(postId: Long)
 

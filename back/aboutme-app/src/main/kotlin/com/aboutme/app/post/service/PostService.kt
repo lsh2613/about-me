@@ -13,6 +13,8 @@ import com.aboutme.core.file.domain.FileUploadType
 import com.aboutme.core.post.domain.Post
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -43,10 +45,14 @@ class PostService(
     private fun saveDefaultPost() = postCommandPort.save(Post())
 
     @Transactional(readOnly = true)
-    override fun readDetails() = postQueryPort.findAll().map(PostDetailRep::from)
+    override fun readDetails(pageable: Pageable): Page<PostDetailRep> {
+        return postQueryPort.findAll(pageable).map(PostDetailRep::from)
+    }
 
     @Transactional(readOnly = true)
-    override fun readAdminDetails() = postQueryPort.findAllWithDeleted().map(PostAdminDetailRep::from)
+    override fun readAdminDetails(pageable: Pageable): Page<PostAdminDetailRep> {
+        return postQueryPort.findAdminDetailsPage(pageable).map(PostAdminDetailRep::from)
+    }
 
     private fun updatePost(
         post: Post,

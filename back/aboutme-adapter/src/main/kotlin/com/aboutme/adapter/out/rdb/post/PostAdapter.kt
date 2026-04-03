@@ -4,15 +4,19 @@ import com.aboutme.adapter.common.annotation.Adapter
 import com.aboutme.adapter.out.rdb.post.entity.PostEntity
 import com.aboutme.adapter.out.rdb.post.mapper.PostMapper
 import com.aboutme.adapter.out.rdb.post.repository.PostJpaRepository
+import com.aboutme.adapter.out.rdb.post.repository.PostQueryDslRepository
 import com.aboutme.app.post.port.out.PostCommandPort
 import com.aboutme.app.post.port.out.PostQueryPort
 import com.aboutme.common.exception.GlobalException
 import com.aboutme.core.post.domain.Post
 import com.aboutme.core.post.domain.error.PostErrorCode
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 
 @Adapter
 class PostAdapter(
     private val postJpaRepository: PostJpaRepository,
+    private val postQueryDslRepository: PostQueryDslRepository,
 ) : PostQueryPort, PostCommandPort {
     override fun save(post: Post): Post {
         val postEntity = postJpaRepository.save(PostMapper.toEntity(post))
@@ -23,12 +27,14 @@ class PostAdapter(
         return findEntityByIdOrThrow(postId).let(PostMapper::toDomain)
     }
 
-    override fun findAll(): List<Post> {
-        return postJpaRepository.findAll().map(PostMapper::toDomain)
+    override fun findAll(pageable: Pageable): Page<Post> {
+        val result = postQueryDslRepository.findPagedResult(pageable, false)
+        return result.getPage(PostMapper::toDomain)
     }
 
-    override fun findAllWithDeleted(): List<Post> {
-        return postJpaRepository.findAllWithDeleted().map(PostMapper::toDomain)
+    override fun findAdminDetailsPage(pageable: Pageable): Page<Post> {
+        val result = postQueryDslRepository.findPagedResult(pageable, true)
+        return result.getPage(PostMapper::toDomain)
     }
 
     override fun update(post: Post) {
