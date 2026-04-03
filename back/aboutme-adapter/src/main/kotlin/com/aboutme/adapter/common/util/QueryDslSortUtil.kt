@@ -1,11 +1,13 @@
 package com.aboutme.adapter.common.util
 
+import com.aboutme.common.annotation.Util
 import com.querydsl.core.types.Expression
 import com.querydsl.core.types.Order
 import com.querydsl.core.types.OrderSpecifier
 import com.querydsl.core.types.dsl.PathBuilder
 import org.springframework.data.domain.Sort
 
+@Util
 object QueryDslSortUtil {
     fun toOrderSpecifiers(
         sort: Sort,
