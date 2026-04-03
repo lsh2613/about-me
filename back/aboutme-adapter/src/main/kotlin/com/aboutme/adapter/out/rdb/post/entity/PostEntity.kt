@@ -7,9 +7,7 @@ import jakarta.persistence.Convert
 import jakarta.persistence.Entity
 import jakarta.persistence.Table
 import org.hibernate.annotations.SQLDelete
-import org.hibernate.annotations.SQLRestriction
 
-@SQLRestriction("deleted_at IS NULL")
 @SQLDelete(sql = "UPDATE post SET deleted_at = NOW() WHERE id = ?")
 @Table(name = "post")
 @Entity
