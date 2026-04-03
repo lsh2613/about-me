@@ -12,7 +12,7 @@ class FileManager {
         private val fileDeleter = FileDeleter()
         private val log = logger()
 
-        fun upload(
+        fun uploadOrThrow(
             file: MultipartFile,
             filePath: Path,
         ) {
@@ -38,7 +38,6 @@ class FileManager {
                 log.info("File uploaded to: {}", filePath)
             }.onFailure { e ->
                 log.error("Failed to upload file: {}", filePath, e)
-                throw e
             }
         }
 
