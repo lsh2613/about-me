@@ -25,12 +25,6 @@ class PostService(
     private val imageTagConverter: ImageTagConverter,
     private val fileNamer: FileNamer,
 ) : PostUseCase {
-    /**
-     * 1. 기본 생성자를 통해 생성된 Post를 저장한다
-     * 2. base64 이미지를 파일로 변환하여 Post ID를 통해 얻은 경로에 저장한다.
-     * 3. 저장된 이미지 경로를 Post Image 엔티티로 저장한다.
-     * 4. 이미지 태그가 base64 -> uri로 바뀐 content를 Post 엔티티에 업데이트한다.
-     */
     @Transactional
     override fun create(command: PostCreateOrUpdateCommand) {
         val post = saveDefaultPost()
