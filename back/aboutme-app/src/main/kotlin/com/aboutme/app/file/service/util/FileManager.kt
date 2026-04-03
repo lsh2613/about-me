@@ -33,7 +33,7 @@ class FileManager {
         ) {
             runCatching {
                 mkdirsIfNotExists(filePath.parent)
-                file.transferTo(Files.newOutputStream(filePath))
+                Files.newOutputStream(filePath).use { file.transferTo(it) }
             }.onSuccess {
                 log.info("File uploaded to: {}", filePath)
             }.onFailure { e ->
