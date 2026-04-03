@@ -31,6 +31,7 @@ class PostQueryDslRepository(
             queryFactory
                 .select(post)
                 .from(post)
+                .where(if (includeSoftDeleted) null else post.deletedAt.isNull)
 
         return PagedResult<PostEntity>(content, pageable, countQuery)
     }
