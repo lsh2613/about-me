@@ -7,7 +7,7 @@ import org.springframework.data.domain.Pageable
 interface PostQueryPort {
     fun findOrThrow(postId: Long): Post
 
-    fun findAll(pageable: Pageable): Page<Post>
+    fun findDetailsPage(pageable: Pageable): Page<Post>
 
     fun findAdminDetailsPage(pageable: Pageable): Page<Post>
 }

@@ -46,7 +46,7 @@ class PostService(
 
     @Transactional(readOnly = true)
     override fun readDetails(pageable: Pageable): Page<PostDetailRep> {
-        return postQueryPort.findAll(pageable).map(PostDetailRep::from)
+        return postQueryPort.findDetailsPage(pageable).map(PostDetailRep::from)
     }
 
     @Transactional(readOnly = true)

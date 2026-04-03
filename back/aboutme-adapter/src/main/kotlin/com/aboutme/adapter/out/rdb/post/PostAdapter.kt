@@ -27,7 +27,7 @@ class PostAdapter(
         return findEntityByIdOrThrow(postId).let(PostMapper::toDomain)
     }
 
-    override fun findAll(pageable: Pageable): Page<Post> {
+    override fun findDetailsPage(pageable: Pageable): Page<Post> {
         val result = postQueryDslRepository.findPagedResult(pageable, false)
         return result.getPage(PostMapper::toDomain)
     }
