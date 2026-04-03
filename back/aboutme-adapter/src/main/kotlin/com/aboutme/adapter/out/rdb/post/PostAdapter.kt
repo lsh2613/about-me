@@ -1,6 +1,7 @@
 package com.aboutme.adapter.out.rdb.post
 
 import com.aboutme.adapter.common.annotation.Adapter
+import com.aboutme.adapter.common.enum.DeletionFilter
 import com.aboutme.adapter.out.rdb.post.entity.PostEntity
 import com.aboutme.adapter.out.rdb.post.mapper.PostMapper
 import com.aboutme.adapter.out.rdb.post.repository.PostJpaRepository
@@ -28,12 +29,12 @@ class PostAdapter(
     }
 
     override fun findDetailsPage(pageable: Pageable): Page<Post> {
-        val result = postQueryDslRepository.findPagedResult(pageable, false)
+        val result = postQueryDslRepository.findPagedResult(pageable, DeletionFilter.EXCLUDE_DELETED)
         return result.getPage(PostMapper::toDomain)
     }
 
     override fun findAdminDetailsPage(pageable: Pageable): Page<Post> {
-        val result = postQueryDslRepository.findPagedResult(pageable, true)
+        val result = postQueryDslRepository.findPagedResult(pageable, DeletionFilter.INCLUDE_DELETED)
         return result.getPage(PostMapper::toDomain)
     }
 
