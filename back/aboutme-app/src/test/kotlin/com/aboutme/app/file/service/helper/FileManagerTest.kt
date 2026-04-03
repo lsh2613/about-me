@@ -68,7 +68,7 @@ class FileManagerTest : DescribeSpec({
 
     describe("파일 업로드") {
         context("파일 업로드 요청을 하면") {
-            FileManager.upload(mockFile, filePath)
+            FileManager.uploadOrThrow(mockFile, filePath)
             it("파일이 업로드된다") {
                 filePath.exists() shouldBe true
             }

@@ -91,7 +91,7 @@ class ProfileService(
         val filePath =
             fileNamer.createUploadFilePath(type = profileType, file = img).also {
                 log.info("Uploading new profile image to path: $it")
-                FileManager.upload(img, it)
+                FileManager.uploadOrThrow(img, it)
                 profileCommandPort.updateProfile(it.toString())
             }
         return filePath

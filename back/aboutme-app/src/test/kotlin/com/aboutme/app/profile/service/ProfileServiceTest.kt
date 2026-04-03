@@ -129,7 +129,7 @@ class ProfileServiceTest : DescribeSpec({
 
         context("이미지 파일인 경우") {
             every { img.contentType } returns "image/png"
-            every { FileManager.upload(img, filePath) } just Runs
+            every { FileManager.uploadOrThrow(img, filePath) } just Runs
             val uri =
                 Path.of("http://localhost:8080/test-upload/profile").toUri().also {
                     every { fileNamer.toUri(filePath) } returns it
@@ -138,7 +138,7 @@ class ProfileServiceTest : DescribeSpec({
             val result = profileService.replaceProfileImage(img)
             it("프로필 이미지 대체 로직을 호출한다") {
                 verify { FileManager.deleteIfExists(Path.of(profile.profileImagePath!!)) }
-                verify { FileManager.upload(img, filePath) }
+                verify { FileManager.uploadOrThrow(img, filePath) }
                 verify { profileCommandPort.updateProfile(filePath.toString()) }
                 result.uri shouldBe uri.toString()
             }
@@ -146,7 +146,7 @@ class ProfileServiceTest : DescribeSpec({
 
         context("업로드 실패한 경우") {
             every { img.contentType } returns "image/png"
-            every { FileManager.upload(img, filePath) } throws RuntimeException("업로드 실패")
+            every { FileManager.uploadOrThrow(img, filePath) } throws RuntimeException("업로드 실패")
             it("예외가 발생한다") {
                 val e = shouldThrow<RuntimeException> { profileService.replaceProfileImage(img) }
                 e.message shouldBe "업로드 실패"
