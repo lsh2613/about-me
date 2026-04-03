@@ -8,6 +8,6 @@ import org.springframework.data.domain.Pageable
 
 @Tag(name = "포스팅")
 interface PostApi {
-    @Operation(summary = "게시글 전체 조회")
+    @Operation(summary = "포스팅 전체 조회")
     fun readDetails(pageable: Pageable): Page<PostDetailRep>
 }
